@@ -11,7 +11,6 @@
 export default {
   async asyncData({ $axios, params }) {
     const config = { headers: { 'Accept': 'application/json' } };
-    console.log();
     let res = Object;
     try {
       res = await $axios.$get(`https://icanhazdadjoke.com/j/${params.id}`, config);

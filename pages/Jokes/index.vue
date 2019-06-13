@@ -1,14 +1,18 @@
 <template>
   <div>
+    <SearchJokes v-on:search-text="searchText" />
     <Joke v-for="joke in jokes" :key="joke.id" :id="joke.id" :joke="joke.joke" />
   </div>
 </template>
 
 <script>
 import Joke from '../../components/Joke';
+import SearchJokes from '../../components/SearchJokes';
+
 export default {
   components: {
-    Joke
+    Joke,
+    SearchJokes
   },
   async asyncData({ $axios }) {
     const config = { headers: { 'Accept': 'application/json' } };
@@ -20,6 +24,18 @@ export default {
     }
     return {
       jokes: res.results
+    }
+  },
+  methods: {
+    async searchText(text) {
+      const config = { headers: { 'Accept': 'application/json' } };
+      let res = Object;
+      try {
+        res = await this.$axios.$get(`https://icanhazdadjoke.com/search?term=${text}`, config);
+      } catch (err) {
+        console.log(err);
+      }
+      this.jokes = res.results;
     }
   },
   head() {
